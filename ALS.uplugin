@@ -20,7 +20,7 @@
 		{
 			"Name": "ALS",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
+			"LoadingPhase": "EarliestPossible"
 		},
 		{
 			"Name": "ALSCamera",
@@ -30,12 +30,12 @@
 		{
 			"Name": "ALSExtras",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
+			"LoadingPhase": "EarliestPossible"
 		},
 		{
 			"Name": "ALSEditor",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "EarliestPossible"
 		}
 	],
 	"Plugins": [
