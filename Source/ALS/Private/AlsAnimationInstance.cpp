@@ -1619,9 +1619,24 @@ void UAlsAnimationInstance::PlayQueuedTurnInPlaceAnimation()
 
 	const auto* TurnInPlaceSettings{TurnInPlaceState.QueuedSettings.Get()};
 
-	PlaySlotAnimationAsDynamicMontage(TurnInPlaceSettings->Animation, TurnInPlaceState.QueuedSlotName,
-	                                  Settings->TurnInPlace.BlendTime, Settings->TurnInPlace.BlendTime,
-	                                  TurnInPlaceSettings->PlayRate, 1, 0.0f);
+	if(TurnInPlaceSettings->Animation && TurnInPlaceSettings->Animation->IsA(UAnimMontage::StaticClass()))
+	{
+		Montage_PlayWithBlendIn(
+			Cast<UAnimMontage>(TurnInPlaceSettings->Animation),
+			FAlphaBlendArgs(Settings->TurnInPlace.BlendTime),
+			TurnInPlaceSettings->PlayRate,
+			EMontagePlayReturnType::MontageLength,
+			0.f,
+			false
+		);
+	}
+	else
+	{
+		PlaySlotAnimationAsDynamicMontage(TurnInPlaceSettings->Animation, TurnInPlaceState.QueuedSlotName,
+									  Settings->TurnInPlace.BlendTime, Settings->TurnInPlace.BlendTime,
+									  TurnInPlaceSettings->PlayRate, 1, 0.0f);	
+	}
+
 
 	// Scale the rotation yaw delta (gets scaled in animation graph) to compensate for play rate and turn angle (if allowed).
 
