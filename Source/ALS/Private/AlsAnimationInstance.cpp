@@ -1619,16 +1619,21 @@ void UAlsAnimationInstance::PlayQueuedTurnInPlaceAnimation()
 
 	const auto* TurnInPlaceSettings{TurnInPlaceState.QueuedSettings.Get()};
 
-	if(TurnInPlaceSettings->Animation && TurnInPlaceSettings->Animation->IsA(UAnimMontage::StaticClass()))
+	if(UAnimMontage* Montage = Cast<UAnimMontage>(TurnInPlaceSettings->Animation))
 	{
-		Montage_PlayWithBlendIn(
-			Cast<UAnimMontage>(TurnInPlaceSettings->Animation),
-			FAlphaBlendArgs(Settings->TurnInPlace.BlendTime),
-			TurnInPlaceSettings->PlayRate,
-			EMontagePlayReturnType::MontageLength,
-			0.f,
-			false
-		);
+		const FAnimMontageInstance* ActiveInst = GetActiveInstanceForMontage(Montage);
+		if(!ActiveInst)
+		{
+			Montage_PlayWithBlendIn(
+				Montage,
+				FAlphaBlendArgs(Settings->TurnInPlace.BlendTime),
+				TurnInPlaceSettings->PlayRate,
+				EMontagePlayReturnType::MontageLength,
+				0.f,
+				true
+			);
+		}
+	
 	}
 	else
 	{
