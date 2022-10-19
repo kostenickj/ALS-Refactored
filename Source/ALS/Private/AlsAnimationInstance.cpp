@@ -433,8 +433,14 @@ void UAlsAnimationInstance::RefreshLocomotionGameThread()
 	check(IsInGameThread())
 
 	const auto& Locomotion{Character->GetLocomotionState()};
-
 	LocomotionState.bHasInput = Locomotion.bHasInput;
+
+	// stop TIP if we get input
+	if(LocomotionState.bHasInput)
+	{
+		StopSlotAnimation(.2f, UAlsConstants::TurnInPlaceStandingSlot());
+		StopSlotAnimation(.2f, UAlsConstants::TurnInPlaceCrouchingSlot());
+	}
 	LocomotionState.InputYawAngle = Locomotion.InputYawAngle;
 
 	LocomotionState.Speed = Locomotion.Speed;
