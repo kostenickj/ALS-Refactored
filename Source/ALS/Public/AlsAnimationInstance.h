@@ -25,6 +25,15 @@ class ALS_API UAlsAnimationInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
+public:
+
+	FORCEINLINE void UpdateSettings(UAlsAnimationInstanceSettings* NewSettings)
+	{
+		Settings = NewSettings;
+	}
+
+	FORCEINLINE const UAlsAnimationInstanceSettings* GetSettings() const { return Settings; }
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
 	TObjectPtr<UAlsAnimationInstanceSettings> Settings;

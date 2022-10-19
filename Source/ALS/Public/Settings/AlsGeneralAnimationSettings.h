@@ -10,6 +10,9 @@ struct ALS_API FAlsGeneralAnimationSettings
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
+	bool bIsMale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
 	bool bUseHandIkBones{true};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
