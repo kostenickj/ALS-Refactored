@@ -434,6 +434,8 @@ void UAlsAnimationInstance::RefreshLocomotionGameThread()
 
 	const auto& Locomotion{Character->GetLocomotionState()};
 	LocomotionState.bHasInput = Locomotion.bHasInput;
+	LocomotionState.MoveFwdInputAmt = Locomotion.MoveFwdInputAmt;
+	LocomotionState.MoveRightInputAmt = Locomotion.MoveRightInputAmt;
 
 	// stop TIP if we get input
 	if(LocomotionState.bHasInput)

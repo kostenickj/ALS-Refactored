@@ -8,6 +8,12 @@ struct ALS_API FAlsLocomotionState
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
+	float MoveFwdInputAmt{0};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
+	float MoveRightInputAmt{0};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
 	bool bHasInput{false};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = -180, ClampMax = 180, ForceUnits = "deg"))
