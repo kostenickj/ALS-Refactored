@@ -1,10 +1,12 @@
 #include "AlsAnimationInstance.h"
 
 #include "AlsCharacter.h"
+#include "KismetAnimationLibrary.h"
 #include "Animation/AnimInstanceProxy.h"
 #include "Components/CapsuleComponent.h"
 #include "Curves/CurveFloat.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Settings/AlsAnimationInstanceSettings.h"
 #include "Utility/AlsConstants.h"
 #include "Utility/AlsLog.h"
@@ -138,6 +140,8 @@ void UAlsAnimationInstance::NativeThreadSafeUpdateAnimation(const float DeltaTim
 	RefreshTransitions();
 	RefreshRotateInPlace(DeltaTime);
 	RefreshTurnInPlace(DeltaTime);
+
+	RefreshWarping(DeltaTime);
 }
 
 void UAlsAnimationInstance::NativePostEvaluateAnimation()
@@ -1701,6 +1705,33 @@ void UAlsAnimationInstance::FinalizeRagdolling() const
 	check(IsInGameThread())
 
 	Character->FinalizeRagdolling();
+}
+
+void UAlsAnimationInstance::RefreshWarping(float DeltaTime)
+{
+	const FVector InputVector = FVector(LocomotionState.MoveFwdInputAmt, LocomotionState.MoveRightInputAmt, 0);
+	float Pitch;
+	float Yaw;
+
+	UKismetMathLibrary::GetYawPitchFromVector(InputVector, Pitch, Yaw);
+	const float InputDirection = UKismetMathLibrary::NormalizeAxis(Yaw);
+	const bool bFWD = !(InputDirection > 135.f || InputDirection < -45.f);
+
+	const float YawRotation = (!bFWD ? 180.f : 0) + InputDirection;
+	// ""Rotate Vector""
+	const FVector TargetVec = UKismetMathLibrary::GreaterGreater_VectorRotator(Character->GetActorForwardVector(), FRotator(0, YawRotation, 0));
+	// ""UnRotate Vector""
+	const FVector Unrotated = UKismetMathLibrary::LessLess_VectorRotator(TargetVec, Character->GetActorRotation());
+	UKismetMathLibrary::GetYawPitchFromVector(Unrotated, Pitch, Yaw);
+
+	WarpingState.LocmotionAngle = Yaw;
+
+	WarpingState.InterpolatedLocmotionAngle = UKismetMathLibrary::RInterpTo(
+		FRotator(0, WarpingState.InterpolatedLocmotionAngle,0)
+		, FRotator(0, WarpingState.LocmotionAngle,0)
+		, DeltaTime
+		, 5.f
+	).Yaw;
 }
 
 float UAlsAnimationInstance::GetCurveValueClamped01(const FName& CurveName) const

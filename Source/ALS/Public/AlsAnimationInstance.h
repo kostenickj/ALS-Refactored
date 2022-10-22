@@ -14,6 +14,7 @@
 #include "State/AlsTransitionsState.h"
 #include "State/AlsTurnInPlaceState.h"
 #include "State/AlsViewAnimationState.h"
+#include "State/AlsWarpingState.h"
 #include "Utility/AlsGameplayTags.h"
 #include "AlsAnimationInstance.generated.h"
 
@@ -93,6 +94,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
 	FAlsLocomotionAnimationState LocomotionState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+	FAlsWarpingAnimationState WarpingState;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
 	FAlsGroundedState GroundedState;
@@ -305,6 +309,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ALS|Als Animation Instance")
 	void FinalizeRagdolling() const;
 
+	//warping
+	void RefreshWarping(float DeltaTime);
+	
 	// Utility
 
 public:
