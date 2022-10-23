@@ -9,6 +9,9 @@ struct ALS_API FAlsWarpingAnimationState
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
+	bool bFwd{true};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
 	float LocmotionAngle{0};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")

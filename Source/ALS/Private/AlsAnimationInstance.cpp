@@ -1713,16 +1713,16 @@ void UAlsAnimationInstance::RefreshWarping(float DeltaTime)
 	float Pitch;
 	float Yaw;
 
-	UKismetMathLibrary::GetYawPitchFromVector(InputVector, Pitch, Yaw);
+	UKismetMathLibrary::GetYawPitchFromVector(InputVector, Yaw, Pitch);
 	const float InputDirection = UKismetMathLibrary::NormalizeAxis(Yaw);
-	const bool bFWD = !(InputDirection > 135.f || InputDirection < -45.f);
+	WarpingState.bFwd = !(InputDirection > 135.f || InputDirection < -45.f);
 
-	const float YawRotation = (!bFWD ? 180.f : 0) + InputDirection;
+	const float YawRotation = (!WarpingState.bFwd ? 180.f : 0) + InputDirection;
 	// ""Rotate Vector""
 	const FVector TargetVec = UKismetMathLibrary::GreaterGreater_VectorRotator(Character->GetActorForwardVector(), FRotator(0, YawRotation, 0));
 	// ""UnRotate Vector""
 	const FVector Unrotated = UKismetMathLibrary::LessLess_VectorRotator(TargetVec, Character->GetActorRotation());
-	UKismetMathLibrary::GetYawPitchFromVector(Unrotated, Pitch, Yaw);
+	UKismetMathLibrary::GetYawPitchFromVector(Unrotated, Yaw, Pitch);
 
 	WarpingState.LocmotionAngle = Yaw;
 
