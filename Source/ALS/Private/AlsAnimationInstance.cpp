@@ -1709,12 +1709,23 @@ void UAlsAnimationInstance::FinalizeRagdolling() const
 
 void UAlsAnimationInstance::RefreshWarping(float DeltaTime)
 {
-	const FVector InputVector = FVector(LocomotionState.MoveFwdInputAmt, LocomotionState.MoveRightInputAmt, 0);
+	
 	float Pitch;
 	float Yaw;
+	const bool IsLookingDirection = RotationMode == AlsRotationModeTags::Aiming || RotationMode == AlsRotationModeTags::LookingDirection;
+	float InputDirection;
 
-	UKismetMathLibrary::GetYawPitchFromVector(InputVector, Yaw, Pitch);
-	const float InputDirection = UKismetMathLibrary::NormalizeAxis(Yaw);
+	if(IsLookingDirection)
+	{
+		const FVector InputVector = FVector(LocomotionState.MoveFwdInputAmt, LocomotionState.MoveRightInputAmt, 0);
+		UKismetMathLibrary::GetYawPitchFromVector(InputVector, Yaw, Pitch);
+		InputDirection = UKismetMathLibrary::NormalizeAxis(Yaw);
+	}
+	else
+	{
+		InputDirection = 0;
+	}
+
 	WarpingState.bFwd = !(InputDirection > 135.f || InputDirection < -45.f);
 
 	const float YawRotation = (!WarpingState.bFwd ? 180.f : 0) + InputDirection;
