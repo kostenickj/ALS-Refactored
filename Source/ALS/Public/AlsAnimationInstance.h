@@ -35,6 +35,9 @@ public:
 
 	FORCEINLINE const UAlsAnimationInstanceSettings* GetSettings() const { return Settings; }
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+	bool bRightShoulder{true};
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
 	TObjectPtr<UAlsAnimationInstanceSettings> Settings;
