@@ -1726,7 +1726,15 @@ void UAlsAnimationInstance::RefreshWarping(float DeltaTime)
 		InputDirection = 0;
 	}
 
-	WarpingState.bFwd = !(InputDirection > 135.f || InputDirection < -45.f);
+	if(bRightShoulder)
+	{
+		WarpingState.bFwd = !(InputDirection > 135.f || InputDirection < -45.f);
+	}
+	else
+	{
+		WarpingState.bFwd = InputDirection < 45.f;
+	}
+
 
 	const float YawRotation = (!WarpingState.bFwd ? 180.f : 0) + InputDirection;
 	// ""Rotate Vector""
