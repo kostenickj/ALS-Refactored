@@ -1732,7 +1732,7 @@ void UAlsAnimationInstance::RefreshWarping(float DeltaTime)
 	}
 	else
 	{
-		WarpingState.bFwd = InputDirection < 45.f;
+		WarpingState.bFwd = InputDirection < 46.f;
 	}
 
 
